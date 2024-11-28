@@ -1,0 +1,57 @@
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #9c0707; /* Cor de fundo do menu (Laranja) */
+    padding: 20px 40px; /* Aumenta a altura da barra de menu */
+}
+.navbar a {
+    color: #FFFFFF; /* Cor do texto do menu */
+    text-decoration: none;
+    margin: 0 20px; /* Aumenta o espaçamento entre os links */
+    font-size: 16px; /* Ajusta o tamanho da fonte */
+}
+.navbar a:hover {
+    color: #E67E22; /* Cor do texto ao passar o mouse (Laranja escuro) */
+}
+.search-bar {
+    display: flex;
+    align-items: center;
+}
+.search-bar input {
+    border: none;
+    padding: 10px;
+    border-radius: 4px;
+    margin-right: 5px;
+}
+.search-bar button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 5px;
+}
+.search-bar button img {
+    width: 24px; /* Ajusta o tamanho do ícone de pesquisa */
+    height: 24px;
+}
+.logout-button {
+    background-color: #3f0701; /* Cor de fundo do botão sair */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+.logout-button:hover {
+    background-color: #63170e; /* Cor do botão ao passar o mouse */
+}
+
+.search-label {
+    padding: 10px;
+    background-color:#E67E22; /* Cor da caixa de buscar */
+    color: white;
+    border-radius: 0 4px 4px 0; /* Arredonda apenas os cantos direito */
+    margin-left: 5px; /* Espaçamento entre as caixas */
+    border: 1px solid white; /* Borda na caixa "Buscar" */
+}

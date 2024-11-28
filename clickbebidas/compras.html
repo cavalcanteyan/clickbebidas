@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylo.css/estilo_produtos.css">
+    <title>Minhas Compras - Click Bebidas</title>
+    <style>
+        /* Adicione estilos personalizados aqui, se necessário */
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="home.html">
+                <img src="imagens/Logotipo.png" alt="Logo" style="height: 50px;">
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="produtos.html">Produtos</a>
+            <a href="contato.html">Contato</a>
+            <a href="compras.html">Minhas Compras</a>
+        </div>
+        <button class="logout-button">Sair</button>
+    </div>
+
+    <div id="compras-container">
+        <h2>Minhas Compras</h2>
+        <ul id="compras-list"></ul>
+    </div>
+
+    <script>
+        function loadCompras() {
+            fetch('buscarCompras.php')
+                .then(response => response.json())
+                .then(compras => {
+                    const comprasList = document.getElementById('compras-list');
+                    compras.forEach(compra => {
+                        const li = document.createElement('li');
+                        li.textContent = `Produto: ${compra.nome} | Quantidade: ${compra.quantidade} | Preço: R$ ${compra.preco.toFixed(2)} | Data: ${new Date(compra.data_compra).toLocaleDateString('pt-BR')}`;
+                        comprasList.appendChild(li);
+                    });
+                })
+                .catch(error => console.error('Erro ao buscar compras:', error));
+        }
+
+        // Carrega as compras ao iniciar a página
+        loadCompras();
+    </script>
+</body>
+</html>

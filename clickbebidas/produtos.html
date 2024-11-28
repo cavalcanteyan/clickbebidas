@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylo.css/estilo_produtos.css">
+    <title>Click Bebidas</title>
+    <style>
+        /* Estilos para o botão  */
+        #toggle-cart {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #007bff; 
+            color: white; 
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            z-index: 1000; /* Garante que fique em cima de outros elementos */
+        }
+
+        .cart {
+            display: none; /* Oculta o carrinho inicialmente */
+            position: fixed;
+            top: 60px;
+            right: 20px;
+            background-color: white; 
+            border: 1px solid #ccc;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+            z-index: 1000; 
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="home.html">
+                <img src="imagens/Logotipo.png" alt="Logo" style="height: 50px;">
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="produtos.html">Produtos</a>
+            <a href="contato.html">Contato</a>
+        </div>
+        <div class="search-bar">
+            <input type="text" id="search-input" placeholder="Pesquisar...">
+            <button id="search-button">
+                <div class="search-label">Buscar</div>
+            </button>
+        </div>
+        <button class="logout-button">Sair</button>
+    </div>
+
+    <button id="toggle-cart" class="toggle-cart">Ver Carrinho</button>
+
+    <div id="produtos-container">
+        <div class="section" id="cervejas">
+            <h2 class="section-title">Cervejas</h2>
+            <div class="products"></div>
+        </div>
+        <div class="section" id="vinhos">
+            <h2 class="section-title">Vinhos</h2>
+            <div class="products"></div>
+        </div>
+        <div class="section" id="destilados">
+            <h2 class="section-title">Destilados</h2>
+            <div class="products"></div>
+        </div>
+        <div class="section" id="bebidas">
+            <h2 class="section-title">Bebidas</h2>
+            <div class="products"></div>
+        </div>
+    </div>
+
+    <div class="cart" id="cart">
+        <h3>Carrinho</h3>
+        <ul id="cart-items"></ul>
+        <p id="total-price">Total: R$ 0,00</p>
+        <button id="buy-button">Comprar</button>
+    </div>
+
+    <div class="message" id="message"></div>
+
+    <script>
+        const container = document.getElementById('produtos-container');
+        const cartItems = document.getElementById('cart-items');
+        const cart = document.getElementById('cart');
+        const message = document.getElementById('message');
+        const totalPriceElement = document.getElementById('total-price');
+        const searchInput = document.getElementById('search-input');
+        const searchButton = document.getElementById('search-button');
+        let totalPrice = 0;
+
+        // Função para buscar produtos
+        function loadProducts(query = '') {
+            fetch(`buscarProdutos.php?query=${encodeURIComponent(query)}`)
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
+                    }
+                    return response.json();
+                })
+                .then(produtos => {
+                    // Limpa as seções antes de adicionar novos produtos
+                    container.querySelectorAll('.products').forEach(div => div.innerHTML = '');
+                    
+                    produtos.forEach(produto => {
+                        const div = document.createElement('div');
+                        div.className = 'product';
+                        div.innerHTML = `
+                            <img src="imagens/${produto.imagem}" alt="${produto.nome}">
+                            <h3>${produto.nome}</h3>
+                            <p>Preço: R$ ${produto.preco}</p>
+                            <p>${produto.descricao}</p>
+                            <div class="quantity-controls">
+                                <button class="decrease" data-nome="${produto.nome}">-</button>
+                                <span class="quantity-display" data-nome="${produto.nome}">0</span>
+                                <button class="increase" data-nome="${produto.nome}">+</button>
+                            </div>
+                            <button class="add-to-cart" data-nome="${produto.nome}" data-preco="${produto.preco}" data-descricao="${produto.descricao}">Adicionar ao Carrinho</button>
+                        `;
+                        document.getElementById(produto.categoria).querySelector('.products').appendChild(div);
+                    });
+                })
+                .catch(error => console.error('Erro ao buscar produtos:', error));
+        }
+
+        // Carrega os produtos ao iniciar a página
+        loadProducts();
+
+        // Evento de busca
+        searchButton.addEventListener('click', () => {
+            const query = searchInput.value;
+            loadProducts(query);
+        });
+
+        container.addEventListener('click', (event) => {
+            if (event.target.classList.contains('increase')) {
+                const nome = event.target.getAttribute('data-nome');
+                const quantityDisplay = document.querySelector(`.quantity-display[data-nome="${nome}"]`);
+                let currentQuantity = parseInt(quantityDisplay.textContent);
+                if (currentQuantity < 12) {
+                    currentQuantity++;
+                    quantityDisplay.textContent = currentQuantity;
+                }
+            } else if (event.target.classList.contains('decrease')) {
+                const nome = event.target.getAttribute('data-nome');
+                const quantityDisplay = document.querySelector(`.quantity-display[data-nome="${nome}"]`);
+                let currentQuantity = parseInt(quantityDisplay.textContent);
+                if (currentQuantity > 0) {
+                    currentQuantity--;
+                    quantityDisplay.textContent = currentQuantity;
+                }
+            } else if (event.target.classList.contains('add-to-cart')) {
+                const nome = event.target.getAttribute('data-nome');
+                const preco = parseFloat(event.target.getAttribute('data-preco').replace('R$', '').replace(',', '.').trim());
+                const descricao = event.target.getAttribute('data-descricao');
+                const quantityDisplay = document.querySelector(`.quantity-display[data-nome="${nome}"]`);
+                const quantity = parseInt(quantityDisplay.textContent);
+                if (quantity > 0) {
+                    const item = document.createElement('li');
+                    item.textContent = `${nome} (${descricao}) (x${quantity}) - R$ ${preco.toFixed(2)}`;
+                    cartItems.appendChild(item);
+
+                    // Atualiza o total
+                    totalPrice += preco * quantity;
+                    totalPriceElement.textContent = `Total: R$ ${totalPrice.toFixed(2)}`;
+
+                    // Mensagem de confirmação
+                    message.textContent = `${quantity} ${nome}(s) adicionado(s) ao carrinho.`;
+                    message.classList.add('show');
+
+                    
+                    quantityDisplay.textContent = 0;
+
+                    
+                    setTimeout(() => {
+                        message.classList.remove('show');
+                    }, 3000);
+                }
+            }
+        });
+
+        document.getElementById('buy-button').addEventListener('click', () => {
+            window.location.href = 'pagamento.html'; 
+        });
+
+        document.getElementById('toggle-cart').addEventListener('click', () => {
+            cart.style.display = cart.style.display === 'none' ? 'block' : 'none';
+        });
+    </script>
+</body>
+</html>
+    

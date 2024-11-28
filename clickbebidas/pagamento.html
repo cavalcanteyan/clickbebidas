@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Página de Pagamento</title>
+    <link rel="stylesheet" href="stylo.css/estilo_pagamento.css"> 
+    <style>
+        /* Estilo para os botões */
+        .buttons {
+            margin-top: 20px; /* Espaço acima dos botões */
+            display: flex; /* Usando flexbox para distribuir os botões */
+            justify-content: space-between; 
+        }
+
+        #finalize-btn, #back-btn {
+            background-color: #007BFF; 
+            color: black; 
+            padding: 15px 30px;  
+            font-size: 16px;  
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; 
+            width: 48%; 
+            transition: background-color 0.3s ease; 
+        }
+
+        #finalize-btn:hover, #back-btn:hover {
+            background-color: #0056b3; 
+        }
+
+        #back-btn {
+            background-color:#E67E22;
+        }
+
+        #back-btn:hover {
+            background-color: #ff7700;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Pagamento</h2>
+        <div class="payment-option">
+            <input type="radio" name="payment" id="credit" value="credit">
+            <label for="credit">Crédito</label><br>
+            <input type="radio" name="payment" id="debit" value="debit">
+            <label for="debit">Débito</label><br>
+            <input type="radio" name="payment" id="pix" value="pix">
+            <label for="pix">PIX</label>
+        </div>
+
+        <div class="card-details" id="card-details">
+            <h3>Dados do Cartão</h3>
+            <label for="card-number">Número do Cartão:</label><br>
+            <input type="text" id="card-number" placeholder="XXXX XXXX XXXX XXXX"><br>
+            <label for="card-expiry">Data de Validade:</label><br>
+            <input type="text" id="card-expiry" placeholder="MM/AA"><br>
+            <label for="card-cvc">CVC:</label><br>
+            <input type="text" id="card-cvc" placeholder="CVC"><br>
+        </div>
+
+        <div class="pix-details" id="pix-details">
+            <h3>Pagamento por PIX</h3>
+            <div class="qr-code" id="qr-code">
+                <img src="imagens/qr_code.png" alt="QR Code">
+                <button class="copy-button" id="copy-qr">Copiar QR Code</button>
+            </div>
+            <p>Utilize o QR Code acima para efetuar o pagamento via PIX.</p>
+        </div>
+
+        <!-- Botões de Finalizar e Voltar -->
+        <div class="buttons">
+            <button id="back-btn">Voltar</button>
+            <button id="finalize-btn">Finalizar Compra</button>
+           
+        </div>
+    </div>
+
+    <script>
+        const paymentOptions = document.querySelectorAll('input[name="payment"]');
+        const cardDetails = document.getElementById('card-details');
+        const pixDetails = document.getElementById('pix-details');
+        const qrCode = document.getElementById('qr-code');
+        const copyButton = document.getElementById('copy-qr');
+
+        const finalizeButton = document.getElementById('finalize-btn');
+        const backButton = document.getElementById('back-btn');
+
+        // Mostrar/ocultar os detalhes com base na escolha de pagamento
+        paymentOptions.forEach(option => {
+            option.addEventListener('change', () => {
+                cardDetails.style.display = 'none';
+                pixDetails.style.display = 'none';
+                qrCode.style.display = 'none';
+
+                if (option.value === 'credit' || option.value === 'debit') {
+                    cardDetails.style.display = 'block';
+                } else if (option.value === 'pix') {
+                    pixDetails.style.display = 'block';
+                    qrCode.style.display = 'block';
+                }
+            });
+        });
+
+        // Função para copiar QR Code
+        copyButton.addEventListener('click', () => {
+            navigator.clipboard.writeText("Link do QR Code ou dados do PIX").then(() => {
+                alert('QR Code copiado para a área de transferência!');
+            });
+        });
+
+        // Função para finalizar a compra
+        finalizeButton.addEventListener('click', () => {
+            alert('Compra realizada com sucesso!');
+            
+        });
+
+        // Função para voltar à página anterior
+        backButton.addEventListener('click', () => {
+            window.history.back();  //voltar para pagina anterior
+        });
+    </script>
+</body>
+</html>

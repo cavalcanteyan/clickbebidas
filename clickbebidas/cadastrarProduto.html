@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylo.css/estilo_produtos.css">
+    <title>Adicionar Produto</title>
+</head>
+<body>
+    <div class="navbar">
+        <div class="logo">
+            <a href="home.html">
+                <img src="imagens/Logotipo.png" alt="Logo" style="height: 50px;">
+            </a>
+        </div>
+        <div class="nav-links">
+            <a href="home.html">Home</a>
+            <a href="produtos.html">Produtos</a>
+            <a href="contato.html">Contato</a>
+        </div>
+    </div>
+
+    <h2>Adicionar Produto</h2>
+    <form action="cadastraProduto.php" method="POST" enctype="multipart/form-data">
+        <label for="nome">Nome:</label>
+        <input type="text" name="nome" required>
+
+        <label for="preco">Preço:</label>
+        <input type="text" name="preco" required>
+
+        <label for="descricao">Descrição:</label>
+        <textarea name="descricao" required></textarea>
+
+        <label for="categoria">Categoria:</label>
+        <select name="categoria" required>
+            <option value="cervejas">Cervejas</option>
+            <option value="vinhos">Vinhos</option>
+            <option value="destilados">Destilados</option>
+            <option value="bebidas">Bebidas</option>
+        </select>
+
+        <label for="imagem">Imagem:</label>
+        <input type="file" name="imagem" accept="image/*" required>
+
+        <button type="submit">Adicionar Produto</button>
+    </form>
+</body>
+</html>

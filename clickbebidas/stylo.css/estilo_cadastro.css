@@ -1,0 +1,94 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+body {
+    background-color: #333;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    
+}
+
+.login-container {
+    width: 100%;
+    max-width: 100%;
+    height: 100%;
+    background-color: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    display: flex;
+    position: relative;
+}
+
+.background {
+    flex: 1;
+    background-image: url(../imagens/fundo4.webp ); 
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.login-form {
+    width: 400px;
+    height: 480px;
+    background-color: #fffdf316;
+    padding: 40px;
+    left: 42%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    right: 0;
+    top: 250px;
+    bottom: 0;
+    
+    
+}
+
+.login-form h2 {
+    color: white;
+    margin-bottom: 20px;
+   text-align: center;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 15px;
+    margin: 10px 0;
+    border-radius: 5px;
+    border: none;
+    font-size: 16px;
+}
+
+.login-form input[type="text"], .login-form input[type="email"], .login-form input[type="password"] {
+    background-color: #f2f2f2;
+}
+
+.login-form button {
+    width: 100%;
+    padding: 15px;
+    background-color: #b1230a;
+    color: white;
+    font-size: 18px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.login-form a {
+    color:white;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.login-form a:hover {
+    text-decoration: underline;
+}
